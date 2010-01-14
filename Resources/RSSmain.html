@@ -1,0 +1,243 @@
+<html>
+	<head>
+        
+		
+		<link rel="stylesheet" href="css/custom-theme/jquery-ui-1.7.2.custom.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="css/ui-extras.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="css/aristo.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        
+		<!-- JQUERY STANDARDS -->
+        <script src="js/jquery-1.3.2.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- JQLAYOUT -->
+		<script src="js/jlayout.border.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.sizes.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.metadata.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.jlayout.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.jqGrid.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<!-- JQGRID -->
+		<script src="js/jquery.jqGrid.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/ui.jqgrid.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		
+		<!-- NICEFORM -->
+		<script src="js/niceforms.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/niceforms-default.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		
+		<!-- POPULATOR -->
+		<script src="js/jquery.populate.pack.js" type="text/javascript" charset="utf-8"></script>
+				
+		<!-- RUBY -->
+		<script src="rb/functions.rb" type="text/ruby" charset="utf-8"></script>
+				
+			<script type="text/javascript">
+				
+				$(function() {
+					
+					var container = $('.layout');
+					
+					function layout(){
+						container.layout({resize:false, type: 'border', vgap: 8, hgap:8});
+					}
+					
+					$('.south').resizable({
+						handles: 'n',
+						stop: layout,
+	                    resize: layout
+					});
+
+					$('.east').resizable({
+						handles: 'w',
+						stop: layout,
+	                    resize: layout
+					});
+
+					$('.west').resizable({
+						handles: 'e',
+						stop: layout,
+	                    resize: layout
+					});
+									
+					$(window).resize(layout);
+					
+					layout();
+					// END LAYOUT SETUP
+					
+					// START UI BOUNDS & STUFF
+					var currentWindow = Titanium.UI.getCurrentWindow();
+					currentWindow.setMinWidth(900);
+					currentWindow.setMinHeight(600);
+					
+					// DB STUFFS
+					// alert(getCurrentDateForSQLite());
+					var myDB = Titanium.Database.open('myDB');
+					// myDB.execute('DROP TABLE IF EXISTS contacts');
+					// Create a table if it doesn't exist
+					var rc = myDB.execute('CREATE TABLE IF NOT EXISTS contacts (id INTEGER, first_name TEXT, middle_name TEXT, last_name TEXT, address1 TEXT, address2 TEXT, city TEXT, state TEXT, postal_code TEXT, created_at TEXT, updated_at TEXT)');
+
+					// Creating a result set so we can count the rows  
+					var rows = myDB.execute("select * from contacts");
+					var count = rows.rowCount();
+					
+					function initializeDB() {
+						if (count == 0) {
+
+							startNum = count + 1
+							// alert('+++++++++++++++++ Created contacts. Total in db: ' + count);
+
+							// Inserting the first record
+							myDB.execute("INSERT INTO contacts (id, first_name, middle_name, last_name, created_at, updated_at) VALUES (?,?,?,?,?,?)", startNum, 'Joe', 'Harry', 'Smith', getCurrentDateForSQLite(), getCurrentDateForSQLite());
+							myDB.execute("INSERT INTO contacts (id, first_name, middle_name, last_name, created_at, updated_at) VALUES (?,?,?,?,?,?)", startNum + 1, 'Jane', 'Grace', 'Doe', getCurrentDateForSQLite(), getCurrentDateForSQLite());
+							myDB.execute("INSERT INTO contacts (id, first_name, middle_name, last_name, created_at, updated_at) VALUES (?,?,?,?,?,?)", startNum + 2, 'Susie', 'Livebo', 'Queue', getCurrentDateForSQLite(), getCurrentDateForSQLite());
+							myDB.execute("INSERT INTO contacts (id, first_name, middle_name, last_name, created_at, updated_at) VALUES (?,?,?,?,?,?)", startNum + 3, 'Twink', 'Crem', 'Key', getCurrentDateForSQLite(), getCurrentDateForSQLite());
+
+							var rows2 = myDB.execute("select * from contacts");
+							var count2 = rows2.rowCount();
+							// alert('+++++++++++++++++ New total in db: ' + count2);
+							
+						}
+					}
+					
+					initializeDB();
+					// END DB STUFFS
+					
+					// create Array for grid population
+					function getData() {
+						// alert("Started GetData");
+						var myData = [];
+						if (count > 0) 
+						{
+							while (rows.isValidRow()) 
+							{
+								// alert(rows.fieldByName('first_name'));
+								try 
+								{
+									myData.push({id:rows.fieldByName('id'), first_name:rows.fieldByName('first_name'), last_name:rows.fieldByName('last_name')});
+									rows.next();
+								} catch(e) {
+									alert(e);
+								}
+								
+							}
+						}
+					
+						return myData;
+					}
+					
+					//Populate Fields Function
+					function initializeForm(){
+						//load contact form
+						$('#form-area').load('new_contact_form.html #load-form-area');
+						$('#contact-form :input').attr('disabled', true);
+						$('#contact-form :button').attr('disabled', true);
+					}
+					
+					initializeForm();
+					
+					function buildTable() {
+						
+						// alert("Inside buildTable");
+						var tableData = getData();
+						
+						jQuery("#addressList").jqGrid({
+							datatype: "local",
+						   	colNames:['ID','First Name', 'Last Name'],
+						   	colModel:[
+						   		{name:'id',index:'id', width:60, sorttype:"int", hidden:true},
+						   		{name:'first_name',index:'first_name'},
+						   		{name:'last_name',index:'last_name'}
+						   	],
+						   	multiselect: false,
+							toolbar: [true, "top"],
+							width:"96%",
+							altRows: true,
+							height: "85%",
+							sortname: 'last_name',
+							sortorder: "asc",
+						   	autowidth: true,
+							rownumbers: true,
+								onSelectRow: function(ids) {
+									if(ids == null) {
+										ids=0;		
+									}
+									// alert(ids);
+									$('#contact-form').populate({first_name:ids, middle_name:ids, last_name:ids, address1:ids, address2:ids, city:ids, state:ids, postal_code:ids});
+									// $('#contact-form :input').removeAttr('disabled');
+									// $('#contact-form :button').removeAttr('disabled');
+									
+									$('#contact-form :input').attr('disabled', false);
+									$('#contact-form :button').attr('disabled', false);
+//									$( "#firstName" ).val( value );
+								}
+						});
+						//jQuery("#addressListPager").jqGrid('navGrid', '#addressListPager',{add:false,edit:false,del:false});		
+						
+						// POPULATE THE TABLE
+						for(var i=0;i<=tableData.length;i++) 
+						{
+							jQuery("#addressList").jqGrid('addRowData',i+1,tableData[i]);
+							
+						}
+							
+					}
+					
+					buildTable();	
+					
+				}); //End function()
+			</script>
+			
+	</head>
+ 
+ <body style="background-color:#1c1c1c;margin:0">
+ 	<div class="layout">	
+		<div class="west flow-container">
+			<header style="width:100%">Address List</header>
+			<div id="addressListContainer" class="pad5">
+				<table id="addressList" border="0" cellspacing="5" cellpadding="5" width="95%"></table>
+				<div id="addressListPager"></div>
+			</div>
+		</div>
+		<div class="center flow-container">
+               <header style="width:100%">Action panel (Center)</header>
+				
+				<div id="form-area"></div>
+				
+		</div>
+		<div class="south bottom">
+			<!-- Toolbar (South) -->
+			<button id="add-contact" click="loadNewContactForm()"> <span class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus" style="float:left"></span>New Contact</button>
+			<span id="save-contact" class="ui-state-default ui-corner-all ui-icon ui-icon-disk disabled" style="float:right"></span>
+		</div>
+	</div>
+	
+			<script type="text/javascript" charset="utf-8">
+					
+					
+					// CRUD
+					// ADD NEW CONTACT
+					$('#add-contact').click( function() {
+						// alert('clicked add');
+						$('#form-area').load('new_contact_form.html #form-area');
+					});
+					
+					function loadNewContactForm() {
+						alert('clicked loasd new contact form');
+					}
+					
+					$('#newContactSubmit').click( function() {
+						alert("Click Submit");
+					});
+					
+					function cancelNewContact() {
+						// alert("Cleared Form");
+							//load contact form
+							$('#form-area').load('new_contact_form.html #load-form-area');
+					}
+					function alertMe() {
+						alert("Click Submit");
+					}
+			</script>
+	
+	
+ </body></html>

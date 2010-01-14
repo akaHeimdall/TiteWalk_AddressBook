@@ -1,0 +1,77 @@
+<html>
+	<head>
+        
+		
+		<link rel="stylesheet" href="css/custom-theme/jquery-ui-1.7.2.custom.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="css/ui-extras.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        
+        <script src="js/jquery-1.3.2.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/niceforms.js" type="text/javascript" charset="utf-8"></script>
+		
+		
+			<script type="text/javascript">
+				$(function() {
+					//set some defaults
+					var currentWindow = Titanium.UI.getCurrentWindow();
+					currentWindow.setWidth(400);
+					currentWindow.setHeight(300);
+					//var window = Titanium.UI.getMainWindow(); // get the main window
+					var note = Titanium.Notification.createNotification(currentWindow);
+					
+					
+					$("#loginForm-div").dialog({
+						title: "Login",
+						autoOpen: true,
+						bgiframe: true,
+						modal: true,
+						buttons: {
+							
+							'Continue':function(){
+								var login = $('#login-value').val();
+								var password = $('#password-value').val();
+								//$("#loginForm").submit();
+								//alert('Login: ' + $('#login-value').val() + '/n Password: ' + $('#password-value').val() );
+								if (login == 'admin' && password == 'password')
+								{
+									currentWindow.setURL("app://RSSmain.html");
+									note.setTitle("Login Successful"); //Add the title;
+								    note.setMessage("Remember to logout when finished using the application!"); //Add the message;
+								    note.show();//Make it appear with the default timings.
+								} 							
+								else 
+								{
+								    note.setTitle("Could not log you in"); //Add the title;
+								    note.setMessage("There was a problem with your login and password combination. Please try again."); //Add the message;
+								    note.show();//Make it appear with the default timings.
+								}
+								
+								
+							} //END CONTINUE FUNCTION
+						} //END BUTTONS
+					}); //END $("#loginForm").dialog({
+				});
+			</script>
+	</head>
+ 
+ <body style="background-color:#1c1c1c;margin:0">
+ 
+ 	
+	<div id="loginForm-div" class="ui-widget-content pad5 blackout" align="center">
+		<form id="loginForm" action="login" method="post" accept-charset="utf-8" class="">
+		<div class="ui-widget-content pad5">
+			
+				<p>
+					
+					<input type="text" value="admin" placeholder="Login" id="login-value"/>
+				</p>
+				<p>
+					
+					<input type="password" value="password" placeholder="Password" id="password-value"/>
+				</p>
+
+		</div>
+		</form>
+	</div>
+ 
+ </body></html>

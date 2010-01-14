@@ -1,0 +1,27 @@
+1. Create login screen
+- Libraries to use: jquery, jqueryui, aristo
+- Create login form
+- Create click function for form
+- Create notifications for success and failure
+
+2. Main Page
+- Use a layout engine for a desktop feel
+- Using jlayout
+- specify the zones to be used
+- specify scroll behavior for the action panel, will handle the address list later.
+
+2b. Set bounds for Main Page
+- Resize window on load
+- Set min width and heights
+
+3. Start CRUD functions
+- Add new contact
+- Edit contact
+- Delete contact
+- List all contacts
+
+4. Add CRUD functions to menu bar
+
+#. Configure the window environment
+- Set the application title
+_ 

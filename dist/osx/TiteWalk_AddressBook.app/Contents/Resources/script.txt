@@ -1,0 +1,55 @@
+1. Create login screen
+- Libraries to use: jquery, jqueryui, aristo
+- Create login form
+- Create click function for form
+- Create notifications for success and failure
+
+2. Main Page
+- Use a layout engine for a desktop feel
+- Explain jlayout
+- specify the zones to be used
+- specify scroll behavior for the action panel, will handle the address list later.
+- Explain JqueryUI
+- Explain Aristo Components
+
+
+3. Set bounds for Main Page
+- Resize window on load
+- Set min width and heights for center and west
+
+4. DB Setup
+- Add sqlite db to app
+- Create few initial apps on load
+
+5. Get Data
+- Call function to get data
+- Explain jqgrid component
+- Use the jgrid component to populate tables
+- Call function to build table
+- Adjust formatting
+- Add function for grid row click
+
+6. Viewing Contact Details
+- Create function for the click event in jqgrid
+- Create detail view page template
+- Wire buttons for enable/disable depending on function
+
+7. New Contact Form
+- Add "New Contact" button to bottom footer
+- Create blank contact form page
+- Explain NiceForm
+- Wrap contact form in niceform setup
+- Add handler for submit new contact
+- Add handler for cancel new contact
+
+#. Start CRUD functions
+- Add new contact
+- Edit contact
+- Delete contact
+- List all contacts
+
+#. Add CRUD functions to menu bar
+
+#. Configure the window environment
+- Set the application title
+_ 

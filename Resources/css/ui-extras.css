@@ -1,0 +1,73 @@
+/*JLAYOUT SETTINGS*/
+html, body {	
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+.layout {
+	height: 100%;
+    background-color: rgb(220, 220, 220);
+}
+
+
+.center, .west {
+    background-color: white;
+	border: 1px solid rgb(200, 200, 200);
+	text-align: center;
+    display: inline-block;
+/*	margin: 0px;*/
+/*			                padding: 0 1em 1em 1em;*/
+	height:100%;
+	min-width: 550px;
+}
+.center {
+	/*padding-right: -50px;*/
+/*	margin-right:17px;*/
+}
+
+p {
+    text-align: left;
+}
+
+.west {
+	width: 35%;
+	/*width: 350px;*/
+	min-width: 350px;
+	/*max-width: 350px;*/
+}
+.flow-container{
+	overflow:auto;
+}
+.south {
+	height: 50px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background-color: #CCCCCC;
+	border: 1px solid rgb(200,200,200);
+	text-align: left;
+}
+
+/**
+ * These styles are to create custom resize handles.
+ */
+.ui-resizable-w {
+    left: -8px;
+    width: 8px;
+}
+
+.ui-resizable-s {
+    bottom: -8px;
+    height: 8px;
+}
+
+/*MISC SETTINGS */
+.pad5{
+	padding:5px;
+}
+
+.blackout{
+	display:none;
+}

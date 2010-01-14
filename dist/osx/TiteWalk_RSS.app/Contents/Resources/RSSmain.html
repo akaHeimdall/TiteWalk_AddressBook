@@ -1,0 +1,186 @@
+<html>
+	<head>
+        
+		
+		<link rel="stylesheet" href="css/custom-theme/jquery-ui-1.7.2.custom.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="css/ui-extras.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="css/aristo.css" type="text/css" media="screen" title="no title" charset="utf-8">
+        
+        <script src="js/jquery-1.3.2.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src="js/jlayout.border.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/jquery.sizes.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.metadata.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.jlayout.min.js" type="text/javascript" charset="utf-8"></script>
+				
+			<script type="text/javascript">
+				
+				$(function() {
+					
+					var container = $('.layout');
+					
+					function layout(){
+						container.layout({resize:false, type: 'border', vgap: 8, hgap:8});
+					}
+					
+					$('.south').resizable({
+						handles: 'n',
+						stop: layout,
+	                    resize: layout
+					});
+
+					$('.east').resizable({
+						handles: 'w',
+						stop: layout,
+	                    resize: layout
+					});
+
+					$('.west').resizable({
+						handles: 'e',
+						stop: layout,
+	                    resize: layout
+					});
+									
+					$(window).resize(layout);
+					
+					layout();
+					// END LAYOUT SETUP
+					
+					// START UI BOUNDS & STUFF
+					var currentWindow = Titanium.UI.getCurrentWindow();
+					currentWindow.setMinWidth(900);
+					currentWindow.setMinHeight(600);
+					
+					
+					// CRUD
+					// ADD NEW CONTACT
+					$('#add-contact').click( function() {
+						// alert('clicked add');
+						
+						// load form
+						$('#form-area').load('new_contact_form.html #form-area')
+					}); 
+					
+					$('#newContactSubmit').click( function() {
+						alert("Click Submit");
+					});
+					
+					$('#newContactCancel').click( function() {
+						alert("Click Cancel");
+						// $('#form-area').contents.remove();
+						// $('#form-area').html("");
+					});					
+				}); //End function()
+			</script>
+			
+			<style type="text/css" media="screen">
+				.top {
+						background-color: rgb(220,220,220);
+						border: 1px solid rgb(200,200,200);
+						text-align: center;
+						width: 45%;
+						height: 400px;
+						display: inline-block;
+						overflow:auto;
+							}
+				.bottom {
+				}
+			</style>
+			
+			<style>
+						html, body {	
+							width: 100%;
+							height: 100%;
+							padding: 0;
+							margin: 0;
+							overflow: hidden;
+						}
+
+						.layout {
+							height: 100%;
+			                background-color: rgb(220, 220, 220);
+						}
+						
+						
+						.center, .west {
+			                background-color: white;
+							border: 1px solid rgb(200, 200, 200);
+							text-align: center;
+			                display: inline-block;
+							margin: 0px;
+/*			                padding: 0 1em 1em 1em;*/
+							height:100%;
+						}
+
+			            p {
+			                text-align: left;
+			            }
+
+						.west {
+							width: 35%;
+							min-width: 350px;
+						}
+						.flow-container{
+							overflow:auto;
+						}
+						.south {
+							height: 50px;
+							padding-left: 20px;
+							padding-right: 20px;
+							background-color: #CCCCCC;
+							border: 1px solid rgb(200,200,200);
+							text-align: left;
+						}
+
+			            /**
+			             * These styles are to create custom resize handles.
+			             */
+			            .ui-resizable-w {
+			                left: -8px;
+			                width: 8px;
+			            }
+
+			            .ui-resizable-s {
+			                bottom: -8px;
+			                height: 8px;
+			            }
+					</style>
+	</head>
+ 
+ <body style="background-color:#1c1c1c;margin:0">
+ 	<div class="layout">
+		<div class="center flow-container">
+               <header style="width:100%">Action panel (Center)</header>
+				
+				<div id="form-area"></div>
+				
+		</div>
+		<div class="west">
+			<header style="width:100%">Titanium Address Book (West)</header>
+		</div>
+		<div class="south bottom">
+			<!-- Toolbar (South) -->
+			<button id="add-contact"> <span class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus" style="float:left"></span>New Contact</button>
+			<span id="save-contact" class="ui-state-default ui-corner-all ui-icon ui-icon-disk disabled" style="float:right"></span>
+		</div>
+	</div>
+	
+			<script type="text/javascript" charset="utf-8">
+					
+					$('#newContactSubmit').click( function() {
+						alert("Click Submit");
+					});
+					
+					function cancelNewContact() {
+						$('#form-area').html("");
+						// alert("Cleared Form");
+					}
+					function alertMe() {
+						alert("Click Submit");
+					}
+			</script>
+	
+	
+ </body></html>
